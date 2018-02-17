@@ -12,6 +12,11 @@ module FixTsvConflict
     using StringExt
 
     TAB = "\t"
+    LF  = "\n"
+
+    LEFT  = ">>>>>>>"
+    SEP   = "======="
+    RIGHT = "<<<<<<<"
 
     def repair(source)
       result = []
@@ -22,16 +27,16 @@ module FixTsvConflict
       source.each_line.with_index do |line, i|
         parse_header(line) if i.zero?
         if branch
-          if line.start_with?(">>>>>>>")
+          if line.start_with?(LEFT)
             result += resolve(left, right)
             branch = nil
-          elsif line.start_with?("=======")
+          elsif line.start_with?(SEP)
             branch = right
           else
             branch << line
           end
         else
-          if line.start_with?("<<<<<<<")
+          if line.start_with?(RIGHT)
             branch = left
           else
             result << line
@@ -88,7 +93,7 @@ module FixTsvConflict
         line
       else
         line = line.rstrip
-        line + TAB * (@tabs - line.count(TAB))  + "\n"
+        line + TAB * (@tabs - line.count(TAB))  + LF
       end
     end
   end
