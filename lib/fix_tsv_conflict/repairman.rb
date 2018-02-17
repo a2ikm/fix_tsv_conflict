@@ -75,7 +75,7 @@ module FixTsvConflict
       end
     end
 
-    def prompt_diff(l, r)
+    def print_diff(l, r)
       lvs = l.chomp.split(TAB)
       rvs = r.chomp.split(TAB)
       @cols.each do |name, col|

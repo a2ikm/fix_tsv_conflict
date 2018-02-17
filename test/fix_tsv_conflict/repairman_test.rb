@@ -174,14 +174,14 @@ id\tname\tjob
     assert_equal expected, repairman.repair(source)
   end
 
-  def test_prompt_diff
+  def test_print_diff
     stdout = StringIO.new
     repairman = FixTsvConflict::Repairman.new(stdout: stdout)
     set_branches(repairman, "<<<<<<< add_joey_1", ">>>>>>> add_joseph_2")
     repairman.parse_header("id\tname\n")
     left  = "3\tJoey\n"
     right = "3\tJoseph\n"
-    repairman.prompt_diff(left, right)
+    repairman.print_diff(left, right)
     expected = <<-TEXT
 id\t3
 <<<<<<< add_joey_1
