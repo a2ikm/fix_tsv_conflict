@@ -1,5 +1,16 @@
+module StringExt
+  refine String do
+    BLANK_RE = /\A[[:space:]]*\z/
+    def blank?
+      BLANK_RE === self
+    end
+  end
+end
+
 module FixTsvConflict
   class Repairman
+    using StringExt
+
     def repair(source)
       result = []
 
@@ -28,7 +39,7 @@ module FixTsvConflict
     end
 
     def resolve(left, right)
-      (left + right).sort_by { |line| line.split("\t").first.to_i }
+      (left + right).reject(&:blank?).sort_by { |line| line.split("\t").first.to_i }
     end
   end
 end
