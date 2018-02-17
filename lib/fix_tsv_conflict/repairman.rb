@@ -24,10 +24,8 @@ module FixTsvConflict
 
     def repair(source)
       result = []
+      branch, left, right = nil, [], []
 
-      left  = []
-      right = []
-      branch = nil
       source.each_line.with_index do |line, i|
         parse_header(line) if i.zero?
         if branch
