@@ -28,7 +28,7 @@ module FixTsvConflict
     end
 
     def resolve(left, right)
-      left + right
+      (left + right).sort_by { |line| line.split("\t").first.to_i }
     end
   end
 end
