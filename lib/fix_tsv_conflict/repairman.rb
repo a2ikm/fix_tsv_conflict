@@ -48,11 +48,20 @@ module FixTsvConflict
         l = left[id]
         r = right[id]
         if l && r
-          [l, r].detect do |line|
-            line.split(TAB).length == @cols.length
-          end
+          select(l, r)
         else
           l || r
+        end
+      end
+    end
+
+    def select(l, r)
+      if l.rstrip == r.rstrip
+        correct_trailing_tabs(l)
+      else
+        # Note: this is very naive.
+        [l, r].detect do |line|
+          line.count(TAB) == @tabs
         end
       end
     end
@@ -70,6 +79,16 @@ module FixTsvConflict
       @cols = {}
       line.chomp.split(TAB).each.with_index do |col, i|
         @cols[col] = i
+      end
+      @tabs = @cols.length - 1
+    end
+
+    def correct_trailing_tabs(line)
+      if line.count(TAB) == @tabs
+        line
+      else
+        line = line.rstrip
+        line + TAB * (@tabs - line.count(TAB))  + "\n"
       end
     end
   end

@@ -131,4 +131,46 @@ id\tname
     TEXT
     assert_equal expected, repairman.repair(source)
   end
+
+  def test_repair_with_lack_of_tabs_right
+    repairman = FixTsvConflict::Repairman.new
+    source = <<-TEXT
+id\tname\tjob
+1\tJess\tmusician
+2\tDanny\tnewscaster
+<<<<<<< add_joey_1
+3\tJoey
+=======
+3\tJoey\t
+>>>>>>> add_joey_2
+    TEXT
+    expected = <<-TEXT
+id\tname\tjob
+1\tJess\tmusician
+2\tDanny\tnewscaster
+3\tJoey\t
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
+  def test_repair_with_lack_of_tabs_left
+    repairman = FixTsvConflict::Repairman.new
+    source = <<-TEXT
+id\tname\tjob
+1\tJess\tmusician
+2\tDanny\tnewscaster
+<<<<<<< add_joey_1
+3\tJoey\t
+=======
+3\tJoey
+>>>>>>> add_joey_2
+    TEXT
+    expected = <<-TEXT
+id\tname\tjob
+1\tJess\tmusician
+2\tDanny\tnewscaster
+3\tJoey\t
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
 end
