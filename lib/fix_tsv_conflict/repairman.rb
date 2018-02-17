@@ -1,8 +1,8 @@
 require "fix_tsv_conflict/diff_printer"
 
 module StringExt
+  BLANK_RE = /\A[[:space:]]*\z/
   refine String do
-    BLANK_RE = /\A[[:space:]]*\z/
     def blank?
       BLANK_RE === self
     end
