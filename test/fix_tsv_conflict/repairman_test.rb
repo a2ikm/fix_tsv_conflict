@@ -174,22 +174,25 @@ id\tname\tjob
     assert_equal expected, repairman.repair(source)
   end
 
-  def test_print_diff
+  def test_repair_with_same_id_and_different_cells_right
     stdout = StringIO.new
     repairman = FixTsvConflict::Repairman.new(stdout: stdout)
-    set_branches(repairman, "<<<<<<< add_joey_1", ">>>>>>> add_joseph_2")
-    repairman.parse_header("id\tname\n")
-    left  = "3\tJoey\n"
-    right = "3\tJoseph\n"
-    repairman.print_diff(left, right)
-    expected = <<-TEXT
-id\t3
-<<<<<<< add_joey_1
-name\tJoey
+    source = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey
+3\tJoey
 =======
-name\tJoseph
->>>>>>> add_joseph_2
+3\tJoseph
+>>>>>>> add_joseph
     TEXT
-    assert_equal expected, stdout.string
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
   end
 end
