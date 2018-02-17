@@ -17,7 +17,8 @@ module FixTsvConflict
       left  = []
       right = []
       branch = nil
-      source.each_line do |line|
+      source.each_line.with_index do |line, i|
+        parse_header(line) if i.zero?
         if branch
           if line.start_with?(">>>>>>>")
             result += resolve(left, right)
@@ -39,7 +40,35 @@ module FixTsvConflict
     end
 
     def resolve(left, right)
-      (left + right).reject(&:blank?).sort_by { |line| line.split("\t").first.to_i }
+      left  = index_by_id(left.reject(&:blank?))
+      right = index_by_id(right.reject(&:blank?))
+      (left.keys + right.keys).uniq.sort.map do |id|
+        l = left[id]
+        r = right[id]
+        if l && r
+          [l, r].detect do |line|
+            line.split("\t").length == @cols.length
+          end
+        else
+          l || r
+        end
+      end
+    end
+
+    def index_by_id(lines)
+      result = {}
+      lines.each do |line|
+        id = line.split("\t", 2).first
+        result[id] = line
+      end
+      result
+    end
+
+    def parse_header(line)
+      @cols = {}
+      line.chomp.split("\t").each.with_index do |col, i|
+        @cols[col] = i
+      end
     end
   end
 end

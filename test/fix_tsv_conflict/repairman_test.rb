@@ -89,4 +89,46 @@ id\tname
     TEXT
     assert_equal expected, repairman.repair(source)
   end
+
+  def test_repair_with_trailing_tabs_right
+    repairman = FixTsvConflict::Repairman.new
+    source = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey_1
+3\tJoey
+=======
+3\tJoey\t
+>>>>>>> add_joey_2
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
+  def test_repair_with_trailing_tabs_left
+    repairman = FixTsvConflict::Repairman.new
+    source = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey_1
+3\tJoey\t
+=======
+3\tJoey
+>>>>>>> add_joey_2
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
 end
