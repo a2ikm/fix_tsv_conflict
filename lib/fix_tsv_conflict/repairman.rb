@@ -11,6 +11,8 @@ module FixTsvConflict
   class Repairman
     using StringExt
 
+    TAB = "\t"
+
     def repair(source)
       result = []
 
@@ -47,7 +49,7 @@ module FixTsvConflict
         r = right[id]
         if l && r
           [l, r].detect do |line|
-            line.split("\t").length == @cols.length
+            line.split(TAB).length == @cols.length
           end
         else
           l || r
@@ -58,7 +60,7 @@ module FixTsvConflict
     def index_by_id(lines)
       result = {}
       lines.each do |line|
-        id = line.split("\t", 2).first
+        id = line.split(TAB, 2).first
         result[id] = line
       end
       result
@@ -66,7 +68,7 @@ module FixTsvConflict
 
     def parse_header(line)
       @cols = {}
-      line.chomp.split("\t").each.with_index do |col, i|
+      line.chomp.split(TAB).each.with_index do |col, i|
         @cols[col] = i
       end
     end
