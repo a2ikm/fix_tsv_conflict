@@ -14,9 +14,9 @@ module FixTsvConflict
     TAB = "\t"
     LF  = "\n"
 
-    LEFT  = ">>>>>>>"
+    LEFT  = "<<<<<<<"
     SEP   = "======="
-    RIGHT = "<<<<<<<"
+    RIGHT = ">>>>>>>"
 
     def initialize(stdout: $stdout)
       @stdout = stdout
@@ -29,7 +29,7 @@ module FixTsvConflict
       source.each_line.with_index do |line, i|
         parse_header(line) if i.zero?
         if branch
-          if line.start_with?(LEFT)
+          if line.start_with?(RIGHT)
             @lbranch = line.chomp
             result += resolve(left, right)
             branch = nil
@@ -39,7 +39,7 @@ module FixTsvConflict
             branch << line
           end
         else
-          if line.start_with?(RIGHT)
+          if line.start_with?(LEFT)
             @rbranch = line.chomp
             branch = left
           else
