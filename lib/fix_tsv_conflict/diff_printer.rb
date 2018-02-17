@@ -1,7 +1,7 @@
 module FixTsvConflict
   class DiffPrinter
-    def initialize(stdout: $stdout)
-      @stdout = stdout
+    def initialize(stderr: $stderr)
+      @stderr = stderr
       @left, @right = {}, {}
     end
 
@@ -26,22 +26,22 @@ module FixTsvConflict
     end
 
     def flush_conflicts
-      @stdout.puts "#{LEFT} #{@lbranch}"
+      @stderr.puts "#{LEFT} #{@lbranch}"
       @left.each do |c, v|
         print_col_and_value(c, v)
       end
-      @stdout.puts SEP
+      @stderr.puts SEP
       @right.each do |c, v|
         print_col_and_value(c, v)
       end
-      @stdout.puts "#{RIGHT} #{@rbranch}"
+      @stderr.puts "#{RIGHT} #{@rbranch}"
 
       @left.clear
       @right.clear
     end
 
     def print_col_and_value(col, value)
-      @stdout.puts [col, value].join(TAB)
+      @stderr.puts [col, value].join(TAB)
     end
 
     def in_conflict?

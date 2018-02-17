@@ -175,8 +175,8 @@ id\tname\tjob
   end
 
   def test_repair_with_same_id_and_different_cells_right
-    stdout = StringIO.new
-    repairman = FixTsvConflict::Repairman.new(stdout: stdout)
+    stderr = StringIO.new
+    repairman = FixTsvConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess

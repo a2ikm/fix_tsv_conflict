@@ -13,8 +13,8 @@ module FixTsvConflict
   class Repairman
     using StringExt
 
-    def initialize(stdout: $stdout)
-      @stdout = stdout
+    def initialize(stderr: $stderr)
+      @stderr = stderr
     end
 
     def repair(source)
@@ -71,7 +71,7 @@ module FixTsvConflict
     end
 
     def print_diff(l, r)
-      printer = DiffPrinter.new(stdout: @stdout)
+      printer = DiffPrinter.new(stderr: @stderr)
       printer.print(@cols, l, @lbranch, r, @rbranch)
     end
 

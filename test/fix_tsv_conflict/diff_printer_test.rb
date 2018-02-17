@@ -2,8 +2,8 @@ require "test_helper"
 
 class DiffPrinterTest < Minitest::Test
   def test_print
-    stdout = StringIO.new
-    printer = FixTsvConflict::DiffPrinter.new(stdout: stdout)
+    stderr = StringIO.new
+    printer = FixTsvConflict::DiffPrinter.new(stderr: stderr)
     cols = { "id" => 0, "name" => 1 }
     lbranch = "add_joey_1"
     rbranch = "add_joseph_2"
@@ -18,12 +18,12 @@ name\tJoey
 name\tJoseph
 >>>>>>> add_joseph_2
     TEXT
-    assert_equal expected, stdout.string
+    assert_equal expected, stderr.string
   end
 
   def test_print_with_adjacent_conflicts
-    stdout = StringIO.new
-    printer = FixTsvConflict::DiffPrinter.new(stdout: stdout)
+    stderr = StringIO.new
+    printer = FixTsvConflict::DiffPrinter.new(stderr: stderr)
     cols = { "id" => 0, "name" => 1, "job" => 2 }
     lbranch = "add_joey_1"
     rbranch = "add_joseph_2"
@@ -40,6 +40,6 @@ name\tJoseph
 job\tpilot
 >>>>>>> add_joseph_2
     TEXT
-    assert_equal expected, stdout.string
+    assert_equal expected, stderr.string
   end
 end
