@@ -174,9 +174,10 @@ id\tname\tjob
     assert_equal expected, repairman.repair(source)
   end
 
-  def test_repair_with_same_id_and_different_cells_right
+  def test_repair_with_selecting_left
+    stdin = StringIO.new("1\n")
     stderr = StringIO.new
-    repairman = FixTsvConflict::Repairman.new(stderr: stderr)
+    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -192,6 +193,52 @@ id\tname
 1\tJess
 2\tDanny
 3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
+  def test_repair_with_selecting_right
+    stdin = StringIO.new("2\n")
+    stderr = StringIO.new
+    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    source = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey
+3\tJoey
+=======
+3\tJoseph
+>>>>>>> add_joseph
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+3\tJoseph
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
+  def test_repair_with_selecting_invalid_loop
+    stdin = StringIO.new("invalid\n2\n")
+    stderr = StringIO.new
+    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    source = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey
+3\tJoey
+=======
+3\tJoseph
+>>>>>>> add_joseph
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+3\tJoseph
     TEXT
     assert_equal expected, repairman.repair(source)
   end

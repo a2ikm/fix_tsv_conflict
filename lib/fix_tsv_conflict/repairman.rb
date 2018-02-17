@@ -13,7 +13,8 @@ module FixTsvConflict
   class Repairman
     using StringExt
 
-    def initialize(stderr: $stderr)
+    def initialize(stdin: $stdin, stderr: $stderr)
+      @stdin  = stdin
       @stderr = stderr
     end
 
@@ -60,19 +61,50 @@ module FixTsvConflict
     end
 
     def select(l, r)
-      if l.rstrip == r.rstrip
-        correct_trailing_tabs(l)
+      selected = if l.rstrip == r.rstrip
+        l
       else
-        # Note: this is very naive.
-        [l, r].detect do |line|
-          line.count(TAB) == @tabs
-        end
+        prompt(l, r)
       end
+      correct_trailing_tabs(selected)
+    end
+
+    def prompt(l, r)
+      print_diff(l, r)
+      prompt_select(l, r)
     end
 
     def print_diff(l, r)
       printer = DiffPrinter.new(stderr: @stderr)
       printer.print(@cols, l, @lbranch, r, @rbranch)
+    end
+
+    def prompt_select(l, r)
+      text = <<-TEXT
+Which do you want keep?
+
+1) #{@lbranch}
+2) #{@rbranch}
+
+Please enter 1 or 2:
+      TEXT
+
+      @stderr.print text.chomp
+
+      loop do
+        case selected = @stdin.gets.strip
+        when "1"
+          break l
+        when "2"
+          break r
+        else
+          text = <<-TEXT
+Invalid input: #{selected}
+Please enter 1 or 2:
+          TEXT
+          @stderr.print text.chomp
+        end
+      end
     end
 
     def index_by_id(lines)
