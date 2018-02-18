@@ -62,7 +62,7 @@ module FixTsvConflict
 
     def select(l, r)
       selected = if l.rstrip == r.rstrip
-        correct_trailing_tabs(l)
+        pick_by_trailing_tabs(l, r)
       else
         prompt(l, r)
       end
@@ -126,12 +126,18 @@ Please enter 1, 2, or 3:
       @tabs = @cols.length - 1
     end
 
-    def correct_trailing_tabs(line)
-      if line.count(TAB) == @tabs
-        line
+    def pick_by_trailing_tabs(l, r)
+      ltabs = l.count(TAB)
+      rtabs = r.count(TAB)
+
+      if ltabs == @tabs
+        l
+      elsif rtabs == @tabs
+        r
       else
-        line = line.rstrip
-        line + TAB * (@tabs - line.count(TAB))  + LF
+        # both are wrong.
+        # so this is a determistic picking.
+        ltabs < rtabs ? l : r
       end
     end
   end
