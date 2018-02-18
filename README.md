@@ -1,5 +1,7 @@
 # FixTSVConflict
 
+[![Build Status](https://travis-ci.org/a2ikm/fix_tsv_conflict.svg?branch=master)](https://travis-ci.org/a2ikm/fix_tsv_conflict)
+
 ## Installation
 
 Add this line to your application's Gemfile:
