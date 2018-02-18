@@ -1,4 +1,4 @@
-module FixTsvConflict
+module FixTSVConflict
   class DiffPrinter
     def initialize(stderr: $stderr)
       @stderr = stderr

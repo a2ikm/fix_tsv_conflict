@@ -1,7 +1,7 @@
 require "fix_tsv_conflict/version"
 require "fix_tsv_conflict/cli"
 
-module FixTsvConflict
+module FixTSVConflict
   TAB = "\t"
   LF  = "\n"
 

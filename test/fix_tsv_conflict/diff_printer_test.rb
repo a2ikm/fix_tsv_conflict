@@ -3,7 +3,7 @@ require "test_helper"
 class DiffPrinterTest < Minitest::Test
   def test_print
     stderr = StringIO.new
-    printer = FixTsvConflict::DiffPrinter.new(stderr: stderr)
+    printer = FixTSVConflict::DiffPrinter.new(stderr: stderr)
     cols = { "id" => 0, "name" => 1 }
     lbranch = "add_joey_1"
     rbranch = "add_joseph_2"
@@ -23,7 +23,7 @@ name\tJoseph
 
   def test_print_with_adjacent_conflicts
     stderr = StringIO.new
-    printer = FixTsvConflict::DiffPrinter.new(stderr: stderr)
+    printer = FixTSVConflict::DiffPrinter.new(stderr: stderr)
     cols = { "id" => 0, "name" => 1, "job" => 2 }
     lbranch = "add_joey_1"
     rbranch = "add_joseph_2"

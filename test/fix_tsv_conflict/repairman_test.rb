@@ -2,7 +2,7 @@ require "test_helper"
 
 class RepairmanTest < Minitest::Test
   def test_repair_with_no_conflicts
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -13,7 +13,7 @@ id\tname
   end
 
   def test_repair_with_new_blank_lines_right
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -32,7 +32,7 @@ id\tname
   end
 
   def test_repair_with_new_blank_lines_left
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -51,7 +51,7 @@ id\tname
   end
 
   def test_repair_with_conflicted_new_records_for_different_ids
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -71,7 +71,7 @@ id\tname
   end
 
   def test_repair_with_conflicted_new_records_for_different_ids_reversed
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -91,7 +91,7 @@ id\tname
   end
 
   def test_repair_with_trailing_tabs_right
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -112,7 +112,7 @@ id\tname
   end
 
   def test_repair_with_trailing_tabs_left
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname
 1\tJess
@@ -133,7 +133,7 @@ id\tname
   end
 
   def test_repair_with_lack_of_tabs_right
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname\tjob
 1\tJess\tmusician
@@ -154,7 +154,7 @@ id\tname\tjob
   end
 
   def test_repair_with_lack_of_tabs_left
-    repairman = FixTsvConflict::Repairman.new
+    repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
 id\tname\tjob
 1\tJess\tmusician
@@ -177,7 +177,7 @@ id\tname\tjob
   def test_repair_with_selecting_left
     stdin = StringIO.new("1\n")
     stderr = StringIO.new
-    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -200,7 +200,7 @@ id\tname
   def test_repair_with_selecting_right
     stdin = StringIO.new("2\n")
     stderr = StringIO.new
-    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -223,7 +223,7 @@ id\tname
   def test_repair_with_selecting_invalid_loop
     stdin = StringIO.new("invalid\n2\n")
     stderr = StringIO.new
-    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -246,7 +246,7 @@ id\tname
   def test_repair_with_selecting_both_of_them
     stdin = StringIO.new("3\n")
     stderr = StringIO.new
-    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess

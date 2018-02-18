@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require "fix_tsv_conflict"
-FixTsvConflict::CLI.new.run
+FixTSVConflict::CLI.new.run

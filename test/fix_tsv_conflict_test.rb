@@ -1,4 +1,4 @@
 require "test_helper"
 
-class FixTsvConflictTest < Minitest::Test
+class FixTSVConflictTest < Minitest::Test
 end

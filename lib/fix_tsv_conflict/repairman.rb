@@ -9,7 +9,7 @@ module StringExt
   end
 end
 
-module FixTsvConflict
+module FixTSVConflict
   class Repairman
     using StringExt
 

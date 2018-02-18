@@ -5,7 +5,7 @@ require "fix_tsv_conflict/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "fix_tsv_conflict"
-  spec.version       = FixTsvConflict::VERSION
+  spec.version       = FixTSVConflict::VERSION
   spec.authors       = ["Masato Ikeda"]
   spec.email         = ["masato.ikeda@gmail.com"]
 

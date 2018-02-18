@@ -1,7 +1,7 @@
 require "fix_tsv_conflict/repairman"
 require "optparse"
 
-module FixTsvConflict
+module FixTSVConflict
   class CLI
     def run(argv = ARGV)
       path, options = handle_argv(argv)
