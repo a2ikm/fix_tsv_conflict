@@ -85,8 +85,9 @@ Which do you want keep?
 
 1) #{@lbranch}
 2) #{@rbranch}
+3) both of them
 
-Please enter 1 or 2:
+Please enter 1, 2, or 3:
       TEXT
 
       @stderr.print text.chomp
@@ -97,10 +98,12 @@ Please enter 1 or 2:
           break l
         when "2"
           break r
+        when "3"
+          break "#{LEFT} #{@lbranch}\n#{l}#{SEP}\n#{r}#{RIGHT} #{@rbranch}\n"
         else
           text = <<-TEXT
 Invalid input: #{selected}
-Please enter 1 or 2:
+Please enter 1, 2, or 3:
           TEXT
           @stderr.print text.chomp
         end

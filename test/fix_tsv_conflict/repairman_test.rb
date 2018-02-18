@@ -242,4 +242,31 @@ id\tname
     TEXT
     assert_equal expected, repairman.repair(source)
   end
+
+  def test_repair_with_selecting_both_of_them
+    stdin = StringIO.new("3\n")
+    stderr = StringIO.new
+    repairman = FixTsvConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    source = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey
+3\tJoey
+=======
+3\tJoseph
+>>>>>>> add_joseph
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+<<<<<<< add_joey
+3\tJoey
+=======
+3\tJoseph
+>>>>>>> add_joseph
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
 end
