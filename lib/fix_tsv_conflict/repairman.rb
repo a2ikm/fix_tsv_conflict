@@ -26,7 +26,7 @@ module FixTsvConflict
         parse_header(line) if i.zero?
         if branch
           if line.start_with?(RIGHT)
-            @lbranch = line.chomp.split(" ").last
+            @rbranch = line.chomp.split(" ").last
             result += resolve(left, right)
             branch = nil
           elsif line.start_with?(SEP)
@@ -36,7 +36,7 @@ module FixTsvConflict
           end
         else
           if line.start_with?(LEFT)
-            @rbranch = line.chomp.split(" ").last
+            @lbranch = line.chomp.split(" ").last
             branch = left
           else
             result << line
