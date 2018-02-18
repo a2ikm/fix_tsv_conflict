@@ -62,11 +62,10 @@ module FixTsvConflict
 
     def select(l, r)
       selected = if l.rstrip == r.rstrip
-        l
+        correct_trailing_tabs(l)
       else
         prompt(l, r)
       end
-      correct_trailing_tabs(selected)
     end
 
     def prompt(l, r)
