@@ -1,4 +1,5 @@
 require "fix_tsv_conflict/diff_printer"
+require "fix_tsv_conflict/logging"
 
 module StringExt
   BLANK_RE = /\A[[:space:]]*\z/
@@ -11,7 +12,11 @@ end
 
 module FixTSVConflict
   class Repairman
+    include Logging
     using StringExt
+
+
+    attr_reader :stderr
 
     def initialize(stdin: $stdin, stderr: $stderr)
       @stdin  = stdin
@@ -49,6 +54,32 @@ module FixTSVConflict
     end
 
     def resolve(left, right)
+      print_conflicts(left, right)
+      result = resolve_conflicts(left, right)
+      print_result(result)
+      result
+    end
+
+    def print_conflicts(left, right)
+      warn "A conflict found:"
+      blank
+      dump "#{LEFT} #{@lbranch}"
+      dump left
+      dump SEP
+      dump right
+      dump "#{RIGHT} #{@rbranch}"
+      blank
+    end
+
+    def print_result(result)
+      notice "The conflict was fixed to:"
+      blank
+      dump result
+      blank
+      blank
+    end
+
+    def resolve_conflicts(left, right)
       left  = index_by_id(left.reject(&:blank?))
       right = index_by_id(right.reject(&:blank?))
       (left.keys + right.keys).uniq.sort.map do |id|
@@ -76,22 +107,25 @@ module FixTSVConflict
     end
 
     def print_diff(l, r)
+      log "Diff by columns:"
+      blank
       printer = DiffPrinter.new(stderr: @stderr)
       printer.print(@cols, l, @lbranch, r, @rbranch)
     end
 
     def prompt_select(l, r)
       text = <<-TEXT
+
 Which do you want keep?
 
-1) #{@lbranch}
-2) #{@rbranch}
-3) both of them
+  1) #{@lbranch}
+  2) #{@rbranch}
+  3) both of them
 
 Please enter 1, 2, or 3:
       TEXT
 
-      @stderr.print text.chomp
+      info text.chomp, no_newline: true
 
       loop do
         case selected = @stdin.gets.strip
@@ -129,6 +163,8 @@ Please enter 1, 2, or 3:
     end
 
     def pick_by_trailing_tabs(l, r)
+      info "Trailing tab conflicts were fixed automatically."
+
       ltabs = l.count(TAB)
       rtabs = r.count(TAB)
 

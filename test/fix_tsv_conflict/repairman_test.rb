@@ -2,7 +2,8 @@ require "test_helper"
 
 class RepairmanTest < Minitest::Test
   def test_repair_with_no_conflicts
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -13,7 +14,8 @@ id\tname
   end
 
   def test_repair_with_multiple_adding_conflicts
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 <<<<<<< HEAD
@@ -36,7 +38,8 @@ id\tname
   end
 
   def test_repair_with_new_blank_lines_right
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -55,7 +58,8 @@ id\tname
   end
 
   def test_repair_with_new_blank_lines_left
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -74,7 +78,8 @@ id\tname
   end
 
   def test_repair_with_conflicted_new_records_for_different_ids
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -94,7 +99,8 @@ id\tname
   end
 
   def test_repair_with_conflicted_new_records_for_different_ids_reversed
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -114,7 +120,8 @@ id\tname
   end
 
   def test_repair_with_trailing_tabs_right
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -135,7 +142,8 @@ id\tname
   end
 
   def test_repair_with_trailing_tabs_left
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname
 1\tJess
@@ -156,7 +164,8 @@ id\tname
   end
 
   def test_repair_with_lack_of_tabs_right
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname\tjob
 1\tJess\tmusician
@@ -177,7 +186,8 @@ id\tname\tjob
   end
 
   def test_repair_with_lack_of_tabs_left
-    repairman = FixTSVConflict::Repairman.new
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stderr: stderr)
     source = <<-TEXT
 id\tname\tjob
 1\tJess\tmusician
