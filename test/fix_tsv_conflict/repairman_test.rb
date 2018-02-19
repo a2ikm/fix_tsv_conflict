@@ -302,4 +302,71 @@ id\tname
     TEXT
     assert_equal expected, repairman.repair(source)
   end
+
+  def test_repair_with_multilines_and_select_left
+    stdin = StringIO.new("1\n")
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    source = <<-TEXT
+id\tname
+<<<<<<< HEAD
+1\tJessy
+=======
+1\t"Jess
+ Katsopolis"
+>>>>>>> add_jess
+2\tDanny
+3\tJoey
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJessy
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
+  def test_repair_with_multilines_and_select_right
+    stdin = StringIO.new("2\n")
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    source = <<-TEXT
+id\tname
+<<<<<<< HEAD
+1\tJessy
+=======
+1\t"Jess
+ Katsopolis"
+>>>>>>> add_jess
+2\tDanny
+3\tJoey
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\t"Jess
+ Katsopolis"
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
+  def test_repair_with_multilines_and_keep_as_is
+    stdin = StringIO.new("k\n")
+    stderr = StringIO.new
+    repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
+    source = <<-TEXT
+id\tname
+<<<<<<< HEAD
+1\tJessy
+=======
+1\t"Jess
+ Katsopolis"
+>>>>>>> add_jess
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal source, repairman.repair(source)
+  end
 end

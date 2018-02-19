@@ -25,6 +25,7 @@ module FixTSVConflict
       result = []
       branch, left, right = nil, [], []
 
+      last = nil
       source.each_line.with_index do |line, i|
         if i.zero?
           parse_header(line)
@@ -42,7 +43,12 @@ module FixTSVConflict
           right.clear
         else
           if branch
-            branch << line
+            if last && line.strip.length > 0 && line.match(/\A[^0-9]/)
+              last << line
+            else
+              branch << line
+              last = line
+            end
           else
             result << line
           end
