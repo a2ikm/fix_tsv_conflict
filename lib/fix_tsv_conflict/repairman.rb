@@ -29,6 +29,8 @@ module FixTSVConflict
             @rbranch = line.chomp.split(" ").last
             result += resolve(left, right)
             branch = nil
+            left.clear
+            right.clear
           elsif line.start_with?(SEP)
             branch = right
           else

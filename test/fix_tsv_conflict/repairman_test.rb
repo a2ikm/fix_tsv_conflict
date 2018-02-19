@@ -12,6 +12,29 @@ id\tname
     assert_equal source, repairman.repair(source)
   end
 
+  def test_repair_with_multiple_adding_conflicts
+    repairman = FixTSVConflict::Repairman.new
+    source = <<-TEXT
+id\tname
+<<<<<<< HEAD
+1\tJess
+=======
+>>>>>>> add_jess_and_joey
+2\tDanny
+<<<<<<< HEAD
+3\tJoey
+======= add_jess_and_joey
+>>>>>>> add_jess_and_joey
+    TEXT
+    expected = <<-TEXT
+id\tname
+1\tJess
+2\tDanny
+3\tJoey
+    TEXT
+    assert_equal expected, repairman.repair(source)
+  end
+
   def test_repair_with_new_blank_lines_right
     repairman = FixTSVConflict::Repairman.new
     source = <<-TEXT
