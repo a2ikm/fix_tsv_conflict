@@ -276,8 +276,8 @@ id\tname
     assert_equal expected, repairman.repair(source)
   end
 
-  def test_repair_with_selecting_both_of_them
-    stdin = StringIO.new("3\n")
+  def test_repair_with_selecting_keep_as_is
+    stdin = StringIO.new("k\n")
     stderr = StringIO.new
     repairman = FixTSVConflict::Repairman.new(stdin: stdin, stderr: stderr)
     source = <<-TEXT
