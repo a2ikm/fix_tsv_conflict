@@ -11,12 +11,12 @@ class DiffPrinterTest < Minitest::Test
     right = "3\tJoseph\n"
     printer.print(cols, left, lbranch, right, rbranch)
     expected = <<-TEXT
-id\t3
-<<<<<<< add_joey_1
-name\tJoey
-=======
-name\tJoseph
->>>>>>> add_joseph_2
+  id\t3
+  <<<<<<< add_joey_1
+  name\tJoey
+  =======
+  name\tJoseph
+  >>>>>>> add_joseph_2
     TEXT
     assert_equal expected, stderr.string
   end
@@ -31,14 +31,14 @@ name\tJoseph
     right = "3\tJoseph\tpilot\n"
     printer.print(cols, left, lbranch, right, rbranch)
     expected = <<-TEXT
-id\t3
-<<<<<<< add_joey_1
-name\tJoey
-job\tcomedian
-=======
-name\tJoseph
-job\tpilot
->>>>>>> add_joseph_2
+  id\t3
+  <<<<<<< add_joey_1
+  name\tJoey
+  job\tcomedian
+  =======
+  name\tJoseph
+  job\tpilot
+  >>>>>>> add_joseph_2
     TEXT
     assert_equal expected, stderr.string
   end
