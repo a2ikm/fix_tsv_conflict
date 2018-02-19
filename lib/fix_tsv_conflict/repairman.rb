@@ -26,23 +26,23 @@ module FixTSVConflict
       branch, left, right = nil, [], []
 
       source.each_line.with_index do |line, i|
-        parse_header(line) if i.zero?
-        if branch
-          if line.start_with?(RIGHT)
-            @rbranch = line.chomp.split(" ").last
-            result += resolve(left, right)
-            branch = nil
-            left.clear
-            right.clear
-          elsif line.start_with?(SEP)
-            branch = right
-          else
-            branch << line
-          end
+        if i.zero?
+          parse_header(line)
+          result << line
+        elsif line.start_with?(LEFT)
+          @lbranch = line.chomp.split(" ").last
+          branch = left
+        elsif line.start_with?(SEP)
+          branch = right
+        elsif line.start_with?(RIGHT)
+          @rbranch = line.chomp.split(" ").last
+          result += resolve(left, right)
+          branch = nil
+          left.clear
+          right.clear
         else
-          if line.start_with?(LEFT)
-            @lbranch = line.chomp.split(" ").last
-            branch = left
+          if branch
+            branch << line
           else
             result << line
           end
