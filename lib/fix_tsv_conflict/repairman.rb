@@ -120,9 +120,9 @@ Which do you want keep?
 
   1) #{@lbranch}
   2) #{@rbranch}
-  3) both of them
+  k) keep as is
 
-Please enter 1, 2, or 3:
+Please enter 1, 2, or k:
       TEXT
 
       info text.chomp, no_newline: true
@@ -133,12 +133,12 @@ Please enter 1, 2, or 3:
           break l
         when "2"
           break r
-        when "3"
+        when "k"
           break "#{LEFT} #{@lbranch}\n#{l}#{SEP}\n#{r}#{RIGHT} #{@rbranch}\n"
         else
           text = <<-TEXT
 Invalid input: #{selected}
-Please enter 1, 2, or 3:
+Please enter 1, 2, or k:
           TEXT
           @stderr.print text.chomp
         end
