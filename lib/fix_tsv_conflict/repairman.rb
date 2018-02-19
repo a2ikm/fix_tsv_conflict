@@ -1,20 +1,18 @@
 require "fix_tsv_conflict/diff_printer"
 require "fix_tsv_conflict/logging"
 
-module StringExt
-  BLANK_RE = /\A[[:space:]]*\z/
-  refine String do
-    def blank?
-      BLANK_RE === self
-    end
-  end
-end
-
 module FixTSVConflict
   class Repairman
     include Logging
-    using StringExt
 
+    BLANK_RE = /\A[[:space:]]*\z/
+    using Module.new {
+      refine String do
+        def blank?
+          BLANK_RE === self
+        end
+      end
+    }
 
     attr_reader :stderr
 
