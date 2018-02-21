@@ -62,14 +62,14 @@ module FixTSVConflict
     end
 
     def print_conflict(conflict)
-      warn "A conflict found:"
+      info "Found a conflict:"
       blank
       dump conflict.to_a
       blank
     end
 
     def print_result(result)
-      notice "The conflict was fixed to:"
+      notice "Resolved to:"
       blank
       dump result
       blank

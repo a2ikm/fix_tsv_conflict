@@ -33,7 +33,7 @@ module FixTSVConflict
         return result
       end
 
-      warn "Automatic repair failed."
+      warn "Failed to resolve it automatically."
       select(conflict)
     end
 
@@ -79,10 +79,7 @@ Which do you want keep?
         when "k"
           return conflict.to_a
         else
-          text = <<-TEXT
-Invalid input: #{selected}
-          TEXT
-          stderr.print text.chomp
+          info "Invalid input: #{selected}"
         end
       end
     end
