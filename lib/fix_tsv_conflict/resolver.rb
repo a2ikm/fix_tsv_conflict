@@ -59,7 +59,7 @@ module FixTSVConflict
 
     def select(conflict)
       text = <<-TEXT
-Which do you want keep?
+Which branch do you want to keep?
 
   1) #{conflict.lbranch}
   2) #{conflict.rbranch}
