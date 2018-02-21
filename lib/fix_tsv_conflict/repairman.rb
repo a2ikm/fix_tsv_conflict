@@ -13,6 +13,10 @@ module FixTSVConflict
       @stderr = stderr
     end
 
+    def resolver
+      @resolver ||= Resolver.new(stdin: stdin, stderr: stderr)
+    end
+
     def repair(source)
       result = []
       branch = nil
@@ -45,7 +49,7 @@ module FixTSVConflict
     def handle(left, lbranch, right, rbranch)
       conflict = Conflict.new(left, lbranch, right, rbranch)
       print_conflict(conflict)
-      result = resolve_conflict(conflict)
+      result = resolver.resolve(conflict)
       print_result(result)
       result
     end
@@ -63,10 +67,6 @@ module FixTSVConflict
       dump result
       blank
       blank
-    end
-
-    def resolve_conflict(conflict)
-      Resolver.new(stdin: stdin, stderr: stderr).resolve(conflict)
     end
   end
 end
