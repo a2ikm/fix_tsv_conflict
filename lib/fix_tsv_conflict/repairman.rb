@@ -23,8 +23,11 @@ module FixTSVConflict
       left,  lbranch = [], nil
       right, rbranch = [], nil
 
-      source.each_line do |line|
-        if line.start_with?(LEFT)
+      source.each_line.with_index do |line, i|
+        if i.zero?
+          load_tabs_count(line)
+          result << line
+        elsif line.start_with?(LEFT)
           lbranch = line.chomp.split(" ").last
           branch = left
         elsif line.start_with?(SEP)
@@ -44,6 +47,10 @@ module FixTSVConflict
         end
       end
       result.join
+    end
+
+    def load_tabs_count(header)
+      resolver.tabs = header.count(TAB)
     end
 
     def handle(left, lbranch, right, rbranch)

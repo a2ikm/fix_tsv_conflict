@@ -14,10 +14,13 @@ module FixTSVConflict
     }
 
     attr_reader :stdin, :stderr
+    attr_accessor :tabs
 
     def initialize(stdin: $stdin, stderr: $stderr)
       @stdin  = stdin
       @stderr = stderr
+
+      @tabs = 0
     end
 
     def resolve(conflict)
@@ -43,7 +46,7 @@ module FixTSVConflict
         r = right[id]
         if l && r
           if l.rstrip == r.rstrip
-            result << l # FIXME select better one from l and r
+            result << pick_by_tabs(l, r)
           else
             return false
           end
@@ -91,6 +94,21 @@ Invalid input: #{selected}
         result[id] = line
       end
       result
+    end
+
+    def pick_by_tabs(l, r)
+      ltabs = l.count(TAB)
+      rtabs = r.count(TAB)
+
+      if ltabs == tabs
+        l
+      elsif rtabs == tabs
+        r
+      else
+        # both are wrong.
+        # so this is a determistic picking.
+        ltabs < rtabs ? l : r
+      end
     end
   end
 end
