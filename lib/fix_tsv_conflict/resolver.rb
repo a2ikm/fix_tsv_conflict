@@ -1,17 +1,10 @@
 require "fix_tsv_conflict/logging"
+require "fix_tsv_conflict/refinements/blank"
 
 module FixTSVConflict
   class Resolver
     include Logging
-
-    BLANK_RE = /\A[[:space:]]*\z/
-    using Module.new {
-      refine String do
-        def blank?
-          BLANK_RE === self
-        end
-      end
-    }
+    using Refinements::Blank
 
     attr_reader :stdin, :stderr
     attr_accessor :tabs

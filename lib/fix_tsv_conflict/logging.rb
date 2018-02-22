@@ -1,12 +1,8 @@
+require "fix_tsv_conflict/refinements/colored_string"
+
 module FixTSVConflict
   module Logging
-    using Module.new {
-      refine String do
-        def red;    "\e[31m#{self}\e[0m"; end
-        def green;  "\e[32m#{self}\e[0m"; end
-        def yellow; "\e[33m#{self}\e[0m"; end
-      end
-    }
+    using Refinements::ColoredString
 
     def log(message, **options)
       if options[:no_newline]
