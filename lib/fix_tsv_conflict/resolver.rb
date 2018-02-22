@@ -39,8 +39,8 @@ module FixTSVConflict
 
     def try(conflict)
       result = []
-      left  = index_by_id(conflict.left.reject(&:blank?))
-      right = index_by_id(conflict.right.reject(&:blank?))
+      left  = index_by_id(conflict.left.reject { |l| l.blank? })
+      right = index_by_id(conflict.right.reject { |r| r.blank? })
       (left.keys + right.keys).uniq.sort.each do |id|
         l = left[id]
         r = right[id]
