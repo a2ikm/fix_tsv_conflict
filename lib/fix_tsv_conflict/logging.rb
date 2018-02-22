@@ -30,7 +30,7 @@ module FixTSVConflict
 
     def dump(lines, **options)
       Array(lines).each do |line|
-        log line.gsub(/^/, "  "), options
+        log line.gsub(/^/, "  ").gsub("\t") { |m| m.bg_cyan }, options
       end
     end
 
